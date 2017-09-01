@@ -107,7 +107,7 @@ INSERT into Product
 	(@vendorId, 'Inspiron', 'Dell Inspiron', 349.99)
 INSERT into Product
 	(VendorId, PartNumber, Name, Price) values 
-	(@vendorId, 'Mabook', 'Macbook Air', 949.99)
+	(@vendorId, 'Macbook', 'Macbook Air', 949.99)
 go
 declare @vendorId int
 SELECT @vendorId = id from Vendor where Code = 'TGT'
@@ -193,4 +193,33 @@ declare @userId int
 SELECT @userId = Id from [User] where UserName = 'gpdoud'
 INSERT into PurchaseRequest
 	(UserId, Description) VALUES (@userId, 'Init-PR')
+go
+CREATE TABLE PurchaseRequestLineItem (
+	Id int not null primary key identity(1,1),
+	PurchaseRequestId int not null foreign key references PurchaseRequest(Id),
+	ProductId int not null foreign key references Product(Id),
+	Quantity int not null default 1
+)
+go
+declare @prId int
+SELECT @prId = Id from PurchaseRequest where Description = 'Init-PR'
+declare @pId int
+SELECT @pId = Id from Product where PartNumber = 'Echo'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
+SELECT @pId = Id from Product where PartNumber = 'Macbook'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
+SELECT @pId = Id from Product where PartNumber = 'D750'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
+SELECT @pId = Id from Product where PartNumber = 'AQUOS'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
+SELECT @pId = Id from Product where PartNumber = 'VCS'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
+SELECT @pId = Id from Product where PartNumber = 'IP7'
+INSERT into PurchaseRequestLineItem
+	(PurchaseRequestId, ProductId, Quantity) Values (@prId,@pId,1)
 go
